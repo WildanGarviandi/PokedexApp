@@ -11,6 +11,7 @@ java {
 
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.converter.gson)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
 }

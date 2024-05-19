@@ -1,28 +1,36 @@
 package com.arvi.data.landing
 
-import android.content.Context
+import com.arvi.data.network.PokemonService
 import com.arvi.domain.landing.models.Pokelist
 import com.arvi.domain.landing.models.Pokemon
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
+import java.util.UUID
 import javax.inject.Inject
 
 class PokemonListDataSource @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val apiService: PokemonService
 ) {
+    private val pokemonId: String
+        get() = UUID.randomUUID().toString()
+
     val pokemonList: Flow<Pokelist> = flow {
-        log().d("pokemonList : ${context.applicationContext.packageName}")
-        emit(Pokelist(listOf(
-            Pokemon(pokeId = "id1", pokeName = "Charmander"),
-            Pokemon(pokeId = "id2", pokeName = "Bulbasaur"),
-            Pokemon(pokeId = "id3", pokeName = "Squirtle")
-        )))
+        val pokeList = apiService.getPokemonList(SIZE_REQUEST, 0).pokemonList
+        pokeList.map {
+            Pokemon(
+                pokeId = pokemonId,
+                pokeName = it.pokeName,
+                pokeUrl = it.pokeUrl,
+            )
+        }
+        log().d("Pokemon list size : ${pokeList.size}")
+        emit(Pokelist(pokemonList = pokeList))
     }
 
     companion object {
         private const val LOG_TAG = "#PokemonListDataSource"
+        private const val SIZE_REQUEST = 20
         private fun log() = Timber.tag(LOG_TAG)
     }
 }
