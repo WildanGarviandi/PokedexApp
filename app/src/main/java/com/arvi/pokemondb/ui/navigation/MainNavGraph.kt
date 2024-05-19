@@ -15,6 +15,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -81,64 +83,68 @@ fun MainNavGraph(
                     bottom = paddingValues.calculateBottomPadding() - heightToDecrease
                 )
         ) {
-            NavHost(
-                navController = mainNavController,
-                startDestination = MainRoute.HomeScreen.route
+            CompositionLocalProvider(
+                LocalLifecycleOwner provides LocalLifecycleOwner.current
             ) {
-                composable(route = MainRoute.HomeScreen.route) {
-                    LandingView(
-                        mainNavController = mainNavController
-                    )
-                }
-
-                composable(route = MainRoute.DetailScreen.route) {
-                    val bundle = it.arguments
-
-                    val food = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        bundle?.getParcelable("item", Pokemon::class.java)
-                    } else {
-                        bundle?.getParcelable("item") as? Pokemon
+                NavHost(
+                    navController = mainNavController,
+                    startDestination = MainRoute.HomeScreen.route
+                ) {
+                    composable(route = MainRoute.HomeScreen.route) {
+                        LandingView(
+                            mainNavController = mainNavController
+                        )
                     }
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        if (food == null) {
-                            Text(" no detail ")
-                        } else {
-                            Text("Detail :")
 
-                            Text("name: ${food.pokeId}")
-                            Text("name: ${food.name}")
+                    composable(route = MainRoute.DetailScreen.route) {
+                        val bundle = it.arguments
+
+                        val food = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            bundle?.getParcelable("item", Pokemon::class.java)
+                        } else {
+                            bundle?.getParcelable("item") as? Pokemon
+                        }
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            if (food == null) {
+                                Text(" no detail ")
+                            } else {
+                                Text("Detail :")
+
+                                Text("name: ${food.pokeId}")
+                                Text("name: ${food.name}")
+                            }
                         }
                     }
-                }
 
-                composable(route = MainRoute.FullListScreen.route) {
-                    val foodList =
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            it.arguments?.getParcelableArrayList("list", Pokemon::class.java)
-                                ?: emptyList<Pokemon>()
-                        } else {
-                            it.arguments?.getParcelableArrayList("list") ?: emptyList()
+                    composable(route = MainRoute.FullListScreen.route) {
+                        val foodList =
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                it.arguments?.getParcelableArrayList("list", Pokemon::class.java)
+                                    ?: emptyList<Pokemon>()
+                            } else {
+                                it.arguments?.getParcelableArrayList("list") ?: emptyList()
+                            }
+
+                        LazyColumn(
+                            Modifier.fillMaxSize(),
+                        ) {
+                            items(count = foodList.size, itemContent = {
+                                ListItem(
+                                    headlineContent = {
+                                        Column {
+                                            Text("name: ${foodList[it].pokeId}")
+                                            Text("name: ${foodList[it].name}")
+                                        }
+                                    },
+                                )
+                            })
                         }
-
-                    LazyColumn(
-                        Modifier.fillMaxSize(),
-                    ) {
-                        items(count = foodList.size, itemContent = {
-                            ListItem(
-                                headlineContent = {
-                                    Column {
-                                        Text("name: ${foodList[it].pokeId}")
-                                        Text("name: ${foodList[it].name}")
-                                    }
-                                },
-                            )
-                        })
                     }
-                }
 
-                composable(route = MainRoute.SettingScreen.route) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(text = "this is SettingScreen screen")
+                    composable(route = MainRoute.SettingScreen.route) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Text(text = "this is SettingScreen screen")
+                        }
                     }
                 }
             }

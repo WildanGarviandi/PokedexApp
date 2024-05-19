@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -69,7 +70,7 @@ fun CustomerNavigationBarItem(
     //bgColor: Color = MaterialTheme.colorScheme.background,
     bgColor: Color = Color.Gray,
     color: Color = MaterialTheme.colorScheme.primary,
-    icon: ImageVector = Icons.Default.ArrowBack,
+    icon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     onClick: () -> Unit = {},
     text: String = "home",
 ) {
@@ -100,7 +101,7 @@ fun CustomerNavigationBarItemSelected(
     //bgColor: Color = MaterialTheme.colorScheme.background,
     bgColor: Color = Color.Gray,
     color: Color = MaterialTheme.colorScheme.primary,
-    icon: ImageVector = Icons.Default.ArrowBack,
+    icon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     onClick: () -> Unit = {},
     text: String = "home",
 ) {
@@ -139,7 +140,7 @@ fun CustomerNavigationBarItemNonSelected(
     //bgColor: Color = MaterialTheme.colorScheme.background,
     bgColor: Color = Color.Gray,
     color: Color = MaterialTheme.colorScheme.primary,
-    icon: ImageVector = Icons.Default.ArrowBack,
+    icon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     onClick: () -> Unit = {},
     text: String = "home",
 ) {

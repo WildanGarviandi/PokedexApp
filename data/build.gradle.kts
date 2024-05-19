@@ -41,6 +41,11 @@ dependencies {
     implementation(libs.android.hilt)
     ksp(libs.android.hilt.compiler)
 
+    // Network
+    // Add the Retrofit library
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
