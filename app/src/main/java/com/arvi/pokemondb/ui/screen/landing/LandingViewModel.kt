@@ -8,8 +8,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,9 +20,17 @@ class LandingViewModel @Inject constructor(
     val uiState: StateFlow<PokeListUiState> = _uiState.asStateFlow()
 
     init {
+        _uiState.update {
+            it.copy(isLoading = true)
+        }
         viewModelScope.launch {
-            getPokemonListUseCase().collect {
-                _uiState.value = PokeListUiState(pokemonList = it)
+            getPokemonListUseCase().collect { pokeList ->
+                _uiState.update { pokeState ->
+                    pokeState.copy(
+                        pokemonList = pokeList,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
