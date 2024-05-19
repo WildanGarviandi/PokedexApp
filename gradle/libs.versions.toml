@@ -5,6 +5,7 @@ composeBom = "2024.05.00"
 composeCompiler = "1.5.3"
 converterGson = "2.9.0"
 daggerHilt = "2.48.1"
+detekt = "1.23.0"
 espressoCore = "3.5.1"
 hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
@@ -56,6 +57,7 @@ androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidLibrary" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

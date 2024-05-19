@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
     id("kotlin-parcelize")
 }
