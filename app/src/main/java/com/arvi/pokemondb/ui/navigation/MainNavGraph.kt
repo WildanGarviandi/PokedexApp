@@ -42,35 +42,15 @@ import com.arvi.pokemondb.ui.screen.landing.view.LandingView
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainNavGraph(
-    appNavController: NavHostController = rememberNavController(),
     mainNavController: NavHostController = rememberNavController(),
 ) {
     val currentSelectedScreen by mainNavController.currentScreenAsState()
     Scaffold(
         bottomBar = {
-            CustomerNavigationBar(
-                containerColor = Color.White
-            ) {
-                CustomerNavigationBarItem(
-                    selected = currentSelectedScreen == MainRoute.HomeScreen,
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Filled.Home,
-                    text = "Home",
-                    onClick = {
-                        mainNavController.navigate(MainRoute.HomeScreen.route)
-                    }
-                )
-                CustomerNavigationBarItem(
-                    selected = currentSelectedScreen == MainRoute.SettingScreen,
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Filled.Settings,
-                    text = "Setting",
-                    onClick = {
-                        mainNavController.navigate(MainRoute.SettingScreen.route)
-                    }
-                )
-            }
-
+            BottomBar(
+                currentSelectedScreen = currentSelectedScreen,
+                mainNavController = mainNavController,
+            )
         }
     ) { paddingValues ->
         val heightToDecrease = 20.dp
@@ -86,67 +66,103 @@ fun MainNavGraph(
             CompositionLocalProvider(
                 LocalLifecycleOwner provides LocalLifecycleOwner.current
             ) {
-                NavHost(
-                    navController = mainNavController,
-                    startDestination = MainRoute.HomeScreen.route
-                ) {
-                    composable(route = MainRoute.HomeScreen.route) {
-                        LandingView(
-                            mainNavController = mainNavController
-                        )
-                    }
+                MainNavigation(mainNavController = mainNavController)
+            }
+        }
+    }
+}
 
-                    composable(route = MainRoute.DetailScreen.route) {
-                        val bundle = it.arguments
+@Composable
+fun BottomBar(
+    currentSelectedScreen: MainRoute,
+    mainNavController: NavHostController,
+) {
+    CustomerNavigationBar(
+        containerColor = Color.White
+    ) {
+        CustomerNavigationBarItem(
+            selected = currentSelectedScreen == MainRoute.HomeScreen,
+            modifier = Modifier.weight(1f),
+            icon = Icons.Filled.Home,
+            text = "Home",
+            onClick = {
+                mainNavController.navigate(MainRoute.HomeScreen.route)
+            }
+        )
+        CustomerNavigationBarItem(
+            selected = currentSelectedScreen == MainRoute.SettingScreen,
+            modifier = Modifier.weight(1f),
+            icon = Icons.Filled.Settings,
+            text = "Setting",
+            onClick = {
+                mainNavController.navigate(MainRoute.SettingScreen.route)
+            }
+        )
+    }
+}
 
-                        val food = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            bundle?.getParcelable("item", Pokemon::class.java)
-                        } else {
-                            bundle?.getParcelable("item") as? Pokemon
-                        }
-                        Column(modifier = Modifier.fillMaxSize()) {
-                            if (food == null) {
-                                Text(" no detail ")
-                            } else {
-                                Text("Detail :")
+@Composable
+fun MainNavigation(
+    mainNavController: NavHostController
+) {
+    NavHost(
+        navController = mainNavController,
+        startDestination = MainRoute.HomeScreen.route
+    ) {
+        composable(route = MainRoute.HomeScreen.route) {
+            LandingView(
+                mainNavController = mainNavController
+            )
+        }
 
-                                Text("name: ${food.pokeId}")
-                                Text("name: ${food.name}")
-                            }
-                        }
-                    }
+        composable(route = MainRoute.DetailScreen.route) {
+            val bundle = it.arguments
 
-                    composable(route = MainRoute.FullListScreen.route) {
-                        val foodList =
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                it.arguments?.getParcelableArrayList("list", Pokemon::class.java)
-                                    ?: emptyList<Pokemon>()
-                            } else {
-                                it.arguments?.getParcelableArrayList("list") ?: emptyList()
-                            }
+            val food = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle?.getParcelable("item", Pokemon::class.java)
+            } else {
+                bundle?.getParcelable("item") as? Pokemon
+            }
+            Column(modifier = Modifier.fillMaxSize()) {
+                if (food == null) {
+                    Text(" no detail ")
+                } else {
+                    Text("Detail :")
 
-                        LazyColumn(
-                            Modifier.fillMaxSize(),
-                        ) {
-                            items(count = foodList.size, itemContent = {
-                                ListItem(
-                                    headlineContent = {
-                                        Column {
-                                            Text("name: ${foodList[it].pokeId}")
-                                            Text("name: ${foodList[it].name}")
-                                        }
-                                    },
-                                )
-                            })
-                        }
-                    }
-
-                    composable(route = MainRoute.SettingScreen.route) {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Text(text = "this is SettingScreen screen")
-                        }
-                    }
+                    Text("name: ${food.pokeId}")
+                    Text("name: ${food.name}")
                 }
+            }
+        }
+
+        composable(route = MainRoute.FullListScreen.route) {
+            val foodList =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.arguments?.getParcelableArrayList("list", Pokemon::class.java)
+                        ?: emptyList<Pokemon>()
+                } else {
+                    it.arguments?.getParcelableArrayList("list") ?: emptyList()
+                }
+
+            LazyColumn(
+                Modifier.fillMaxSize(),
+            ) {
+                items(count = foodList.size, itemContent = {
+                    ListItem(
+                        headlineContent = {
+                            Column {
+                                Text("name: ${foodList[it].pokeId}")
+                                Text("name: ${foodList[it].name}")
+                            }
+                        },
+                    )
+                })
+            }
+        }
+
+        composable(route = MainRoute.SettingScreen.route) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(text = "this is SettingScreen screen")
             }
         }
     }
@@ -177,6 +193,7 @@ private fun NavController.currentScreenAsState(): State<MainRoute> {
     return selectedItem
 }
 
+@Suppress("unused")
 fun NavController.navigate(
     route: String,
     args: Bundle,

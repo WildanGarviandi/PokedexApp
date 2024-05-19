@@ -53,6 +53,10 @@ android {
     }
 }
 
+apply {
+    from(rootProject.file("gradle/script/detekt.gradle"))
+}
+
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))

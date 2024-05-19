@@ -1,4 +1,3 @@
 package com.arvi.pokemondb.di.detail
 
-class DetailDataModule {
-}
+class DetailDataModule

@@ -31,10 +31,10 @@ class BottomNavItemCurvedShape(
         density: Density
     ): Outline {
         return Outline.Generic(path = Path().apply {
-            val curveDepth = (curveCircleRadius / 0.9).toFloat()
+            val curveDepth = (curveCircleRadius / DEPTH_CURVE).toFloat()
             // the coordinates (x,y) of the start point before curve
             mFirstCurveStartPoint.set(
-                (size.width / 2) - (curveCircleRadius * 2.0).toFloat(),
+                (size.width / 2) - (curveCircleRadius * CIRCLE_RADIUS).toFloat(),
                 curveDepth
             )
 
@@ -52,7 +52,7 @@ class BottomNavItemCurvedShape(
             mSecondCurveStartPoint =
                 mFirstCurveEndPoint
             mSecondCurveEndPoint.set(
-                (size.width / 2) + (curveCircleRadius * 2.0).toFloat(),
+                (size.width / 2) + (curveCircleRadius * CIRCLE_RADIUS).toFloat(),
                 curveDepth
             )
 
@@ -64,11 +64,11 @@ class BottomNavItemCurvedShape(
 
             // the coordinates (x,y)  of the 2nd control point on a cubic curve
             mFirstCurveControlPoint2.set(
-                mFirstCurveEndPoint.x - (curveCircleRadius * 2.4).toFloat() + curveCircleRadius,
+                mFirstCurveEndPoint.x - (curveCircleRadius * HALF_RADIUS).toFloat() + curveCircleRadius,
                 mFirstCurveEndPoint.y
             )
             mSecondCurveControlPoint1.set(
-                mSecondCurveStartPoint.x + (curveCircleRadius * 2.4).toFloat() - curveCircleRadius,
+                mSecondCurveStartPoint.x + (curveCircleRadius * HALF_RADIUS).toFloat() - curveCircleRadius,
                 mSecondCurveStartPoint.y
             )
             mSecondCurveControlPoint2.set(
@@ -90,7 +90,14 @@ class BottomNavItemCurvedShape(
             )
             lineTo(size.width, curveDepth)
             lineTo(size.width, size.height)
-            lineTo(0F, (size.height * 1.1).toFloat())
+            lineTo(0F, (size.height * SIZE).toFloat())
         })
+    }
+
+    companion object {
+        private const val DEPTH_CURVE = 0.9
+        private const val CIRCLE_RADIUS = 2.0
+        private const val HALF_RADIUS = 2.4
+        private const val SIZE = 1.1
     }
 }

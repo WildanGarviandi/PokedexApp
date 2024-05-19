@@ -19,7 +19,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arvi.pokemondb.ui.shape.BottomNavItemCurvedShape
 
+@Suppress("LongParameterList")
 @Composable
 fun CustomerNavigationBar(
     modifier: Modifier = Modifier,
@@ -63,11 +63,11 @@ fun CustomerNavigationBar(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 fun CustomerNavigationBarItem(
-    selected: Boolean = true,
     modifier: Modifier = Modifier,
-    //bgColor: Color = MaterialTheme.colorScheme.background,
+    selected: Boolean = true,
     bgColor: Color = Color.Gray,
     color: Color = MaterialTheme.colorScheme.primary,
     icon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -95,10 +95,10 @@ fun CustomerNavigationBarItem(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 fun CustomerNavigationBarItemSelected(
     modifier: Modifier = Modifier,
-    //bgColor: Color = MaterialTheme.colorScheme.background,
     bgColor: Color = Color.Gray,
     color: Color = MaterialTheme.colorScheme.primary,
     icon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -134,10 +134,10 @@ fun CustomerNavigationBarItemSelected(
     }
 }
 
+@Suppress("LongParameterList")
 @Composable
 fun CustomerNavigationBarItemNonSelected(
     modifier: Modifier = Modifier,
-    //bgColor: Color = MaterialTheme.colorScheme.background,
     bgColor: Color = Color.Gray,
     color: Color = MaterialTheme.colorScheme.primary,
     icon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,

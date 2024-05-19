@@ -19,13 +19,13 @@ import com.arvi.pokemondb.ui.screen.landing.LandingViewModel
 @Composable
 fun LandingView(
     modifier: Modifier = Modifier,
-    mainNavController: NavHostController = rememberNavController(),
+    @Suppress("UNUSED_PARAMETER") mainNavController: NavHostController = rememberNavController(),
     viewModel: LandingViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var isLoading by remember { mutableStateOf(false) }
+    @Suppress("UNUSED_VARIABLE") var isLoading by remember { mutableStateOf(false) }
 
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         items(uiState.pokemonList.pokemonList) {
             Text(text = it.pokeId)
             Text(text = it.pokeName)
@@ -36,5 +36,5 @@ fun LandingView(
 @Preview
 @Composable
 fun LandingViewPreview() {
-
+    LandingView()
 }
